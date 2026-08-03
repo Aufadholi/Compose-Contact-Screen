@@ -64,10 +64,6 @@ fun ContactScreen(){
         mutableStateOf("")
     }
 
-    var valid = true
-
-
-
     var namaError by remember { mutableStateOf("") }
     var nomorError by remember { mutableStateOf("") }
     var emailError by remember { mutableStateOf("") }
@@ -129,21 +125,23 @@ fun ContactScreen(){
         }
         Button(
             onClick = {
+                var valid = true
                 if(nama.isBlank() || nama.length < 3){
                     namaError = "Nama harus diisi atau lebih dari 3 huruf"
-                    return@Button
+                    valid = false
                 }
                 if(email.isBlank() || !email.contains("@")){
                     emailError = "email harus memiliki standart @"
-                    return@Button
+                    valid = false
                 }
                 if(nomor.isBlank() || !nomor.all { it.isDigit() } || nomor.length < 10){
                     nomorError = "nomor harus lebih dari 10 digit"
-                    return@Button
+                    valid = false
                 }
                 contacts.add(
                     Contact(nama, nomor, email)
                 )
+                if(!valid) return@Button
                 nama = ""
                 nomor = ""
                 email = ""
