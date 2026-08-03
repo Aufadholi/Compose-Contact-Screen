@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -21,12 +21,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -116,7 +116,13 @@ fun ContactScreen(){
             )
 
         }
-        ButtonCount(count = count, onPlus = {count++}, onMinus = {count--})
+        ButtonCount(
+            count = count,
+            onPlus = {count++},
+            onMinus = {if (count > 0){
+                count--
+            } }
+        )
         Button(
             onClick = {
                 var valid = true
@@ -141,7 +147,8 @@ fun ContactScreen(){
                 email = ""
             },
             colors = ButtonDefaults.buttonColors(
-                containerColor = Color.Green.copy(alpha = 0.5f)
+                containerColor = Color(0xFF4CAF50),
+                contentColor = Color.White
             ),
             modifier = Modifier
                 .padding(16.dp)
@@ -218,9 +225,9 @@ fun ButtonCount(
     onMinus: () -> Unit
 ){
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
     ){
         Text("Count: $count", fontStyle = MaterialTheme.typography.titleLarge.fontStyle)
 
