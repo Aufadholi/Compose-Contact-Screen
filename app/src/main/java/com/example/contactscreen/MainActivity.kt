@@ -1,37 +1,31 @@
 package com.example.contactscreen
 
 import android.os.Bundle
-import android.widget.Space
 import androidx.activity.ComponentActivity
-import androidx.compose.runtime.mutableStateOf
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.ui.unit.dp
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.TextField
-import androidx.compose.ui.unit.sp
 import androidx.compose.material3.Text
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.text.isDigitsOnly
-import com.example.contactscreen.ui.theme.ContactScreenTheme
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,6 +64,10 @@ fun ContactScreen(){
         mutableStateOf("")
     }
 
+    var valid = true
+
+
+
     var namaError by remember { mutableStateOf("") }
     var nomorError by remember { mutableStateOf("") }
     var emailError by remember { mutableStateOf("") }
@@ -85,34 +83,46 @@ fun ContactScreen(){
         ) {
             TextField(
                 value = nama,
-                onValueChange = { nama = it },
+                onValueChange = {
+                    nama = it
+                    namaError = ""
+                },
                 label = { Text("Nama") },
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                isError = namaError.isNotBlank(),
                 supportingText = {
-                    if(nama.isBlank() || nama.length < 3){
-                        Text(text = "Nama harus diisi atau lebih dari 3 huruf", color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
+                    if(namaError.isNotBlank()){
+                        Text(text = namaError, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
                     }
                 }
             )
             TextField(
                 value = nomor,
-                onValueChange = { nomor = it},
+                onValueChange = {
+                    nomor = it
+                    nomorError = ""
+                },
                 label = { Text("Nomor") },
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                isError = nomorError.isNotBlank(),
                 supportingText = {
-                    if(nomor.isBlank() || !nomor.all { it.isDigit() } || nomor.length < 10){
-                        Text(text = "Nomor harus berupa angka dan minimal 10 digit", color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
+                    if(nomorError.isNotBlank()){
+                        Text(text = nomorError, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
                     }
                 }
             )
             TextField(
                 value = email,
-                onValueChange = { email = it},
+                onValueChange = {
+                    email = it
+                    emailError = ""
+                },
                 label = { Text("Email") },
                 modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                isError = emailError.isNotBlank(),
                 supportingText = {
-                    if(email.isBlank() || !email.contains("@")){
-                        Text(text = "Email harus valid (mengandung @)", color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
+                    if (emailError.isNotBlank()){
+                        Text(text = emailError, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
                     }
                 }
             )
