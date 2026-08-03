@@ -138,10 +138,10 @@ fun ContactScreen(){
                     nomorError = "nomor harus lebih dari 10 digit"
                     valid = false
                 }
+                if(!valid) return@Button
                 contacts.add(
                     Contact(nama, nomor, email)
                 )
-                if(!valid) return@Button
                 nama = ""
                 nomor = ""
                 email = ""
