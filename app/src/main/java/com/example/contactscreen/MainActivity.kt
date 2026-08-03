@@ -43,6 +43,7 @@ data class Contact(
     val email: String
 )
 
+
 @Composable
 fun ContactScreen(){
     val contacts = remember {
@@ -75,53 +76,38 @@ fun ContactScreen(){
             .padding(16.dp)
     ){
         Column(
-            modifier = Modifier.padding(16.dp).fillMaxWidth()
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
-            TextField(
+            InputField(
                 value = nama,
+                label = "Nama",
+                error = namaError,
                 onValueChange = {
                     nama = it
                     namaError = ""
-                },
-                label = { Text("Nama") },
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                isError = namaError.isNotBlank(),
-                supportingText = {
-                    if(namaError.isNotBlank()){
-                        Text(text = namaError, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-                    }
                 }
             )
-            TextField(
+            InputField(
                 value = nomor,
+                label = "Nomor",
+                error = nomorError,
                 onValueChange = {
                     nomor = it
                     nomorError = ""
-                },
-                label = { Text("Nomor") },
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                isError = nomorError.isNotBlank(),
-                supportingText = {
-                    if(nomorError.isNotBlank()){
-                        Text(text = nomorError, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-                    }
                 }
             )
-            TextField(
+            InputField(
                 value = email,
+                label = "Email",
+                error = emailError,
                 onValueChange = {
                     email = it
                     emailError = ""
-                },
-                label = { Text("Email") },
-                modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
-                isError = emailError.isNotBlank(),
-                supportingText = {
-                    if (emailError.isNotBlank()){
-                        Text(text = emailError, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
-                    }
                 }
             )
+
         }
         Button(
             onClick = {
@@ -173,7 +159,9 @@ fun ContactsCard(
             .padding(8.dp)
     ){
         Column(
-            modifier = Modifier.padding(16.dp).fillMaxWidth()
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth()
         ) {
             Text(text = contact.nama)
             Spacer(modifier = Modifier.height(6.dp))
@@ -182,4 +170,28 @@ fun ContactsCard(
             Text(text = contact.email)
         }
     }
+}
+
+@Composable
+fun InputField(
+    value: String,
+    label: String,
+    error: String,
+    onValueChange: (String) -> Unit
+){
+    TextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
+        value = value,
+        onValueChange = onValueChange,
+        label = { Text(label) },
+        isError = error.isNotBlank(),
+        supportingText = {
+            if(error.isNotBlank()){
+                Text(text = error, color = MaterialTheme.colorScheme.error, fontSize = 12.sp)
+            }
+        }
+
+    )
 }
