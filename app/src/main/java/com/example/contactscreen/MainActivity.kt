@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -67,11 +69,13 @@ fun ContactScreen(){
     var email by remember {
         mutableStateOf("")
     }
+    var count by remember {
+        mutableStateOf(0)
+    }
 
     var namaError by remember { mutableStateOf("") }
     var nomorError by remember { mutableStateOf("") }
     var emailError by remember { mutableStateOf("") }
-
 
     Column(
         modifier = Modifier
@@ -112,6 +116,7 @@ fun ContactScreen(){
             )
 
         }
+        ButtonCount(count = count, onPlus = {count++}, onMinus = {count--})
         Button(
             onClick = {
                 var valid = true
@@ -188,8 +193,8 @@ fun InputField(
     TextField(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = Color.Blue.copy(alpha = 0.1f))
             .padding(top = 8.dp),
+        shape = MaterialTheme.shapes.medium,
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
@@ -204,4 +209,32 @@ fun InputField(
         }
 
     )
+}
+
+@Composable
+fun ButtonCount(
+    count: Int,
+    onPlus: () -> Unit,
+    onMinus: () -> Unit
+){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(16.dp)
+    ){
+        Text("Count: $count", fontStyle = MaterialTheme.typography.titleLarge.fontStyle)
+
+        Button(
+            onClick = onPlus,
+            modifier = Modifier.padding(start = 8.dp)
+        ){
+            Text("Tombol Plus")
+        }
+        Button(
+            onClick = onMinus,
+            modifier = Modifier.padding(start = 8.dp)
+        ) {
+            Text("Tombol Minus")
+        }
+    }
 }
