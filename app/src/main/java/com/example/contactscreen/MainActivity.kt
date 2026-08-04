@@ -25,6 +25,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,22 +61,22 @@ fun ContactScreen(){
             Contact("Eka", "08123456783", "ekaluya@gmail.com")
         )
     }
-    var nama by remember {
+    var nama by rememberSaveable {
         mutableStateOf("")
     }
-    var nomor by remember {
+    var nomor by rememberSaveable {
         mutableStateOf("")
     }
-    var email by remember {
+    var email by rememberSaveable {
         mutableStateOf("")
     }
-    var count by remember {
+    var count by rememberSaveable {
         mutableStateOf(0)
     }
 
-    var namaError by remember { mutableStateOf("") }
-    var nomorError by remember { mutableStateOf("") }
-    var emailError by remember { mutableStateOf("") }
+    var namaError by rememberSaveable { mutableStateOf("") }
+    var nomorError by rememberSaveable { mutableStateOf("") }
+    var emailError by rememberSaveable { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -229,7 +230,10 @@ fun ButtonCount(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ){
-        Text("Count: $count", fontStyle = MaterialTheme.typography.titleLarge.fontStyle)
+        Text(
+            "Count: $count",
+            style = MaterialTheme.typography.titleLarge
+        )
 
         Button(
             onClick = onPlus,
