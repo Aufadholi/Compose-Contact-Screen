@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -73,6 +74,9 @@ fun ContactScreen(){
     var count by rememberSaveable {
         mutableStateOf(0)
     }
+    val JumlahKontak = contacts.size
+
+    val StatusKontak = if(JumlahKontak>=5) "Kontak banyak" else "Kontak sedikit"
 
     var namaError by rememberSaveable { mutableStateOf("") }
     var nomorError by rememberSaveable { mutableStateOf("") }
@@ -158,6 +162,24 @@ fun ContactScreen(){
             Text("Tambah Kontak")
         }
         Spacer(modifier = Modifier.height(16.dp))
+
+        Column(
+            modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = Color.Gray,
+                        shape = MaterialTheme.shapes.medium
+                    ),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+
+        ){
+            Text(
+                text = "Jumlah Kontak ada $JumlahKontak, Status $StatusKontak",
+                style = MaterialTheme.typography.titleMedium
+            )
+        }
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
@@ -249,3 +271,5 @@ fun ButtonCount(
         }
     }
 }
+
+
