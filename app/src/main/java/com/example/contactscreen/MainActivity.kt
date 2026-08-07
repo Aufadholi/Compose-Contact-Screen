@@ -62,6 +62,11 @@ fun ContactScreen(){
             Contact("Eka", "08123456783", "ekaluya@gmail.com")
         )
     }
+
+    var Search by rememberSaveable() {
+        mutableStateOf("")
+    }
+
     var nama by rememberSaveable {
         mutableStateOf("")
     }
@@ -78,6 +83,10 @@ fun ContactScreen(){
 
     val StatusKontak = if(JumlahKontak>=5) "Kontak banyak" else "Kontak sedikit"
 
+    val filteredContacts = contacts.filter{
+        it.nama.contains(Search, ignoreCase = true)
+    }
+
     var namaError by rememberSaveable { mutableStateOf("") }
     var nomorError by rememberSaveable { mutableStateOf("") }
     var emailError by rememberSaveable { mutableStateOf("") }
@@ -92,6 +101,14 @@ fun ContactScreen(){
                 .padding(16.dp)
                 .fillMaxWidth()
         ) {
+            InputField(
+                value = Search,
+                label = "Cari Kontak",
+                error = "",
+                onValueChange = {
+                    Search = it
+                }
+            )
             InputField(
                 value = nama,
                 label = "Nama",
@@ -165,12 +182,7 @@ fun ContactScreen(){
 
         Column(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .border(
-                        width = 1.dp,
-                        color = Color.Gray,
-                        shape = MaterialTheme.shapes.medium
-                    ),
+                    .fillMaxWidth(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
 
@@ -183,8 +195,13 @@ fun ContactScreen(){
         LazyColumn(
             modifier = Modifier.weight(1f)
         ) {
-            items(contacts) { contact ->
-                ContactsCard(contact = contact)
+            items(filteredContacts) { contact ->
+                ContactsCard(
+                    contact = contact,
+                    onHapus = {
+                        contacts.remove(contact)
+                    }
+                )
             }
         }
     }
@@ -192,23 +209,38 @@ fun ContactScreen(){
 
 @Composable
 fun ContactsCard(
-    contact: Contact
+    contact: Contact,
+    onHapus: () -> Unit
 ){
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
     ){
-        Column(
+        Row(
             modifier = Modifier
                 .padding(16.dp)
-                .fillMaxWidth()
-        ) {
-            Text(text = contact.nama)
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(text = contact.nomor)
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(text = contact.email)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                Text(text = contact.nama)
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(text = contact.nomor)
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(text = contact.email)
+            }
+
+            Button(
+                onClick = onHapus,
+                colors = ButtonDefaults.buttonColors(containerColor = Color.Red, contentColor = Color.White)
+            ) {
+                Text(text = "Hapus")
+            }
         }
     }
 }
